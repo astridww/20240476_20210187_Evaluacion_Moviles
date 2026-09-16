@@ -1,6 +1,6 @@
-import { initializeApp, FirebaseApp } from "firebase/app";
-import { getFirestore, Firestore } from "firebase/firestore";
-import { getAuth, Auth } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import {
   FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN,
@@ -12,25 +12,25 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: FIREBASE_API_KEY ,
-  authDomain: FIREBASE_AUTH_DOMAIN ,
-  projectId: FIREBASE_PROJECT_ID ,
-  storageBucket: FIREBASE_STORAGE_BUCKET ,
-  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID ,
-  appId: FIREBASE_APP_ID ,
+  apiKey: FIREBASE_API_KEY,
+  authDomain:FIREBASE_AUTH_DOMAIN,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+  appId: FIREBASE_APP_ID,
 };
 
 console.log("Valor de configuracion", firebaseConfig);
 
 // Initialize Firebase
-const app: FirebaseApp = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 if (app) {
   console.log('Firebase initialized successfully');
 } else {
   console.log('Firebase initialization failed');
 }
 
-const database: Firestore = getFirestore(app);
+const database = getFirestore(app);
 if (database) {
   console.log('Firestore initialized correctly');
 } else {
@@ -38,6 +38,6 @@ if (database) {
 }
 
 // Auth (sin persistencia personalizada por ahora; ver nota en el chat)
-const auth: Auth = getAuth(app);
+const auth = getAuth(app);
 
 export { database, auth };

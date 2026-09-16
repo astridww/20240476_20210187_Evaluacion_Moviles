@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, TextInput, Text, StyleSheet, KeyboardTypeOptions } from 'react-native';
+import { View, TextInput, Text, StyleSheet, KeyboardTypeOptions, Platform } from 'react-native';
+import { COLORS } from '../constants/theme';
 
 interface InputProps {
   label?: string;
@@ -8,6 +9,7 @@ interface InputProps {
   placeholder?: string;
   secureTextEntry?: boolean;
   keyboardType?: KeyboardTypeOptions;
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   error?: string;
 }
 
@@ -18,6 +20,7 @@ export default function Input({
   placeholder,
   secureTextEntry,
   keyboardType,
+  autoCapitalize,
   error,
 }: InputProps) {
   return (
@@ -28,9 +31,10 @@ export default function Input({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor="#94A3B8"
+        placeholderTextColor={COLORS.textSecondary}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
+        autoCapitalize={autoCapitalize}
       />
       {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
@@ -43,26 +47,26 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
-    color: '#1E293B',
+    color: COLORS.textPrimary,
     fontWeight: '600',
     marginBottom: 6,
     fontSize: 14,
   },
   input: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.surface,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
+    borderColor: COLORS.border,
     borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 16,
-    color: '#0F172A',
+    color: COLORS.textPrimary,
   },
   inputError: {
-    borderColor: '#EF4444',
+    borderColor: COLORS.error,
   },
   errorText: {
-    color: '#EF4444',
+    color: COLORS.error,
     fontSize: 12,
     marginTop: 4,
   },

@@ -1,21 +1,18 @@
 import { doc, setDoc } from 'firebase/firestore';
 import { database } from '../config/firebase';
 
-export type UserData = {
+export async function saveUser(uid: string, data: {
   email: string;
   nombre: string;
   fechaNacimiento: string;
   carnet: string;
   imagenUrl: string;
-};
-
-export async function saveUser(uid: string, data: UserData): Promise<boolean> {
+}): Promise<boolean> {
   try {
     await setDoc(doc(database, 'usuarios', uid), data);
-    console.log('Usuario guardado en Firestore con uid:', uid);
     return true;
   } catch (e) {
-    console.error('Error al guardar usuario:', e);
+    console.error('Error guardando usuario:', e);
     return false;
   }
 }

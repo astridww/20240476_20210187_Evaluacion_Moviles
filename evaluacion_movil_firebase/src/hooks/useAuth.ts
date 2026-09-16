@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import {
-  User,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  User,
 } from 'firebase/auth';
 import { auth } from '../config/firebase';
 
@@ -18,36 +18,32 @@ export function useAuth() {
       setUser(u);
       setLoading(false);
     });
-    return () => unsubscribe();
+    return unsubscribe;
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    setError(null);
     try {
-      await signInWithEmailAndPassword(auth, email.trim(), password);
+      setError(null);
+      await signInWithEmailAndPassword(auth, email, password);
       return true;
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : 'Error al iniciar sesión';
-      setError(msg);
-      console.error('Login error:', e);
+    } catch (e: any) {
+      setError(e.message);
       return false;
     }
   };
 
   const register = async (email: string, password: string): Promise<string | null> => {
-    setError(null);
     try {
-      const credential = await createUserWithEmailAndPassword(auth, email.trim(), password);
-      return credential.user.uid;
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : 'Error al registrarse';
-      setError(msg);
-      console.error('Register error:', e);
+      setError(null);
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      return result.user.uid;
+    } catch (e: any) {
+      setError(e.message);
       return null;
     }
   };
 
-  const logout = async (): Promise<void> => {
+  const logout = async () => {
     await signOut(auth);
   };
 

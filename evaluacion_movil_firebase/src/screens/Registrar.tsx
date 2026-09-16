@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
   Image,
-  ScrollView,
+  StyleSheet,
   Alert,
+  ScrollView,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import { useAuth } from '../hooks/useAuth';
 import { saveUser } from '../hooks/useAddUser';
+import { COLORS } from '../constants/theme';
+import Input from '../components/Input';
+import Button from '../components/Button';
+import Card from '../components/Card';
 
 export default function Registrar({ navigation }: any) {
   const { register, error } = useAuth();
@@ -61,101 +62,70 @@ export default function Registrar({ navigation }: any) {
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.title}>Crear cuenta</Text>
+        <Card>
+          <Text style={styles.title}>Crear cuenta</Text>
 
-        {imagenUrl ? (
-          <Image
-            source={{ uri: imagenUrl }}
-            style={styles.avatar}
-            onError={() => {}}
-          />
-        ) : (
-          <View style={[styles.avatar, styles.avatarPlaceholder]}>
-            <Text style={styles.avatarText}>Foto</Text>
-          </View>
-        )}
+          {imagenUrl ? (
+            <Image source={{ uri: imagenUrl }} style={styles.avatar} />
+          ) : (
+            <View style={[styles.avatar, styles.avatarPlaceholder]}>
+              <Text style={styles.avatarText}>Foto</Text>
+            </View>
+          )}
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Correo</Text>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="Correo"
             placeholder="correo@ejemplo.com"
-            autoCapitalize="none"
             keyboardType="email-address"
             value={email}
             onChangeText={setEmail}
           />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Contraseña</Text>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="Contraseña"
             placeholder="Mínimo 6 caracteres"
             secureTextEntry
             value={password}
             onChangeText={setPassword}
           />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Nombre completo</Text>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="Nombre completo"
             placeholder="Juan Pérez"
             value={nombre}
             onChangeText={setNombre}
           />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Fecha de nacimiento</Text>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="Fecha de nacimiento"
             placeholder="DD/MM/AAAA"
             value={fechaNacimiento}
             onChangeText={setFechaNacimiento}
           />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Carnet institucional</Text>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="Carnet institucional"
             placeholder="20210187"
             value={carnet}
             onChangeText={setCarnet}
           />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>URL de imagen</Text>
-          <TextInput
-            style={styles.input}
+          <Input
+            label="URL de imagen"
             placeholder="https://ejemplo.com/imagen.jpg"
-            autoCapitalize="none"
             value={imagenUrl}
             onChangeText={setImagenUrl}
           />
-        </View>
 
-        {error ? <Text style={styles.error}>{error}</Text> : null}
+          {error ? <Text style={styles.error}>{error}</Text> : null}
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleRegister}
-          disabled={busy}
-        >
-          {busy ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.buttonText}>Registrarse</Text>
-          )}
-        </TouchableOpacity>
+          <Button
+            title="Registrarse"
+            onPress={handleRegister}
+            loading={busy}
+          />
+        </Card>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.link}>¿Ya tienes cuenta? Entra</Text>
-        </TouchableOpacity>
+        <Button
+          title="¿Ya tienes cuenta? Entra"
+          variant="secondary"
+          onPress={() => navigation.navigate('Login')}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -164,71 +134,38 @@ export default function Registrar({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.background,
   },
   scrollContent: {
     flexGrow: 1,
     padding: 20,
-    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
+    color: COLORS.textPrimary,
   },
   avatar: {
     width: 100,
     height: 100,
     borderRadius: 50,
     marginBottom: 20,
-    backgroundColor: '#e0e0e0',
+    alignSelf: 'center',
+    backgroundColor: COLORS.border,
   },
   avatarPlaceholder: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   avatarText: {
-    color: '#999',
+    color: COLORS.textSecondary,
     fontSize: 14,
-  },
-  inputContainer: {
-    width: '100%',
-    marginBottom: 12,
-  },
-  label: {
-    fontSize: 14,
-    marginBottom: 4,
-    color: '#333',
-    fontWeight: '600',
-  },
-  input: {
-    height: 44,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 6,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-  },
-  button: {
-    backgroundColor: '#0288d1',
-    padding: 12,
-    borderRadius: 6,
-    alignItems: 'center',
-    marginTop: 8,
-    width: '100%',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  link: {
-    color: '#0288d1',
-    textAlign: 'center',
-    marginTop: 16,
   },
   error: {
-    color: 'red',
+    color: COLORS.error,
     textAlign: 'center',
     marginBottom: 8,
   },

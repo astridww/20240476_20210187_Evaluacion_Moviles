@@ -1,27 +1,27 @@
-import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuth } from './src/hooks/useAuth';
+import { COLORS } from './src/constants/theme';
 import Login from './src/screens/Login';
 import Registrar from './src/screens/Registrar';
 import Home from './src/screens/Home';
 
 const Stack = createNativeStackNavigator();
 
-function AuthGuard({ children }: { children: React.ReactNode }) {
+function AuthGuard() {
   const { user, loading } = useAuth();
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#0288d1" />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.background }}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
   }
 
-  return <>{user ? <HomeScreen /> : <AuthStack />}</>;
+  return user ? <HomeStack /> : <AuthStack />;
 }
 
 function AuthStack() {
@@ -41,13 +41,13 @@ function AuthStack() {
   );
 }
 
-function HomeScreen() {
+function HomeStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Home"
         component={Home}
-        options={{ title: 'Inicio', headerShown: false }}
+        options={{ title: 'Mi perfil' }}
       />
     </Stack.Navigator>
   );

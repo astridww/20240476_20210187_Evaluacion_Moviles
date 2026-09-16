@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { useAuth } from '../hooks/useAuth';
+import { COLORS } from '../constants/theme';
+import Input from '../components/Input';
+import Button from '../components/Button';
+import Card from '../components/Card';
 
 export default function Login({ navigation }: any) {
   const { login, error } = useAuth();
@@ -28,41 +24,39 @@ export default function Login({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Iniciar sesión</Text>
+      <Card>
+        <Text style={styles.title}>Iniciar sesión</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Correo"
-        autoCapitalize="none"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
+        <Input
+          label="Correo"
+          placeholder="correo@ejemplo.com"
+          autoCapitalize="none"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <Input
+          label="Contraseña"
+          placeholder="Mínimo 6 caracteres"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+
+        {error ? <Text style={styles.error}>{error}</Text> : null}
+
+        <Button
+          title="Entrar"
+          onPress={handleLogin}
+          loading={busy}
+        />
+      </Card>
+
+      <Button
+        title="¿Sin cuenta? Regístrate"
+        variant="secondary"
+        onPress={() => navigation.navigate('Registrar')}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleLogin}
-        disabled={busy}
-      >
-        {busy ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Entrar</Text>
-        )}
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate('Registrar')}>
-        <Text style={styles.link}>¿Sin cuenta? Regístrate</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -72,40 +66,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.background,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
-  },
-  input: {
-    height: 44,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 6,
-    paddingHorizontal: 10,
-    marginBottom: 12,
-  },
-  button: {
-    backgroundColor: '#0288d1',
-    padding: 12,
-    borderRadius: 6,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  link: {
-    color: '#0288d1',
-    textAlign: 'center',
-    marginTop: 16,
+    color: COLORS.textPrimary,
   },
   error: {
-    color: 'red',
+    color: COLORS.error,
     textAlign: 'center',
     marginBottom: 8,
   },
